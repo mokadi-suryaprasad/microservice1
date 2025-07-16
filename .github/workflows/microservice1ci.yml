@@ -17,7 +17,7 @@ env:
   GCS_BUCKET: devfrontend
 
 jobs:
-  ci-cd:
+  ci:
     runs-on: ubuntu-latest
 
     steps:
@@ -34,14 +34,6 @@ jobs:
 
     - name: 4️⃣ Run Unit Tests
       run: echo ' No test cases running '
-
-    - name: 5️⃣ CodeQL Init
-      uses: github/codeql-action/init@v2
-      with:
-        languages: javascript
-
-    - name: 6️⃣ CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
 
     - name: 7️⃣ Create Zip Artifact
       run: |
