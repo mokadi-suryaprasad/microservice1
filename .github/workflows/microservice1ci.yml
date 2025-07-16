@@ -1,4 +1,4 @@
-name: Microservice1 GCP CI Pipelinee
+name: Microservice1 GCP CI Pipeline
 
 on:
   push:
