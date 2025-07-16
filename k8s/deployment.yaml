@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microservice1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: microservice1
+  template:
+    metadata:
+      labels:
+        app: microservice1
+    spec:
+      containers:
+      - name: microservice1
+        image: my-app-image
+        ports:
+          - containerPort: 80
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /microservice1
+            port: 80
+            scheme: HTTP
