@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: microservice1
-        image: my-app-image
+        image: us-central1-docker.pkg.dev/heroic-gamma-465105-c8/microservicequiz/microservice1@sha256:102a9688dace4e72f982cb2ac645068587583a63d9bfe00d8eb7f7a8aa0452af
         ports:
           - containerPort: 80
         readinessProbe:
