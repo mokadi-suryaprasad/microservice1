@@ -94,14 +94,20 @@ jobs:
         docker stop ${{ env.SERVICE_NAME }}
         docker rm ${{ env.SERVICE_NAME }}
 
-    - name: 1️⃣3️⃣ Update Kubernetes deployment.yaml
+    - name: 1️⃣3️⃣ Clone Helm Chart Repo
+      env:
+        GH_PAT: ${{ secrets.GH_PAT }}
       run: |
-        sed -i "s|image: .*|image: ${{ env.GCP_REGION }}-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/${{ env.GAR_REPO }}/${{ env.SERVICE_NAME }}:${{ env.BUILD_TAG }}|" k8s/deployment.yaml
-
+        git clone https://github.com/mokadi-suryaprasad/microservices-Helm-charts.git
+        cd microservices-Helm-charts
         git config --global user.email "mspr9773@gmail.com"
         git config --global user.name "M Surya Prasad"
-        git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}
+        git remote set-url origin https://$GH_PAT@github.com/mokadi-suryaprasad/microservices-Helm-charts.git
+        git checkout master
 
-        git add k8s/deployment.yaml
-        git diff --cached --quiet && echo "🟡 No changes to commit" || git commit -m "Update image to ${{ env.BUILD_TAG }}"
-        git push origin main
+    - name: 1️⃣4️⃣ Update Helm values.yaml with new image tag
+      run: |
+        cd microservices-Helm-charts
+        sed -i 's|^\(\s*tag:\s*\).*|\1'"${{ env.BUILD_TAG }}"'|' values.yaml
+        git add values.yaml
+        git diff --cached --quiet || (git commit -m "Update microservice1 image tag to ${{ env.BUILD_TAG }}" && git push origin master)
